@@ -34,14 +34,14 @@ typedef struct {
 
 #undef DEFINE_HEATER
 /// \brief helper macro to fill heater definition struct from config.h
-#define	DEFINE_HEATER(name, pin, pwm,kP,tI,tD,i_limit,watts,t_dead) { &(pin ## _WPORT), pin ## _PIN, \
-                                        pwm ? (pin ## _PWM) : NULL, \
-                                        (int32_t)(kP>0? kP*PID_SCALE_P     : kP ), \
-                                        (int32_t)(tI>0? (kP*PID_SCALE_I/tI): tI), \
-                                        (int32_t)(kP>0 ? ((float)tD*PID_SCALE_D)/kP : 12345 ), \
-                                        (int16_t)(i_limit), \
-                                        (int32_t)(watts *PID_SCALE), \
-                                        (int32_t)(t_dead*PID_SCALE)},
+#define	DEFINE_HEATER(name, pin, pwm,kP,kI,kD,i_limit,watts,t_dead) { &(pin ## _WPORT), pin ## _PIN, \
+      pwm ? (pin ## _PWM) : NULL,					\
+      (int32_t)(kP > 0 ? kP*PID_SCALE_P     : -kP ),			\
+      (int32_t)(kI >=0 ? (kI*PID_SCALE_I): kP*PID_SCALE_I/(-kI) ),	\
+      (int32_t)(kD >=0 ? ((float)kD*PID_SCALE_D):  kD/kP*PID_SCALE_D ),	\
+      (int16_t)(i_limit),						\
+      (int32_t)(watts *PID_SCALE),					\
+      (int32_t)(t_dead*PID_SCALE)},
 static const heater_definition_t heaters[NUM_HEATERS] =
 {
 	#include	"config_wrapper.h"
@@ -92,21 +92,21 @@ struct {
 #ifdef PID_P
 #define         DEFAULT_P                               PID_P
 #else
-#define		DEFAULT_P				(32*PID_SCALE)
+#define		DEFAULT_P				(32*PID_SCALE_D)
 #endif 
 
 /// default scaled I factor, equivalent to 0.5 counts/(qC*qs) or 8 counts/C*s
 #ifdef PID_I
 #define         DEFAULT_I                               PID_I
 #else
-#define		DEFAULT_I				(8*PID_SCALE)
+#define		DEFAULT_I				(8*PID_SCALE_I)
 #endif
 
 /// default scaled D factor, equivalent to 24 counts/(qc/(TH_COUNT*qs)) or 192 counts/(C/s)
 #ifdef PID_D
 #define         DEFAULT_D                               PID_D
 #else
-#define		DEFAULT_D				(24*TH_COUNT*PID_SCALE)
+#define		DEFAULT_D				(192*PID_SCALE_D)
 #endif
 
 /// default scaled I limit, equivalent to 384 qC*qs, or 24 C*s
