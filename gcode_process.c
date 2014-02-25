@@ -673,7 +673,7 @@ void process_gcode_command() {
       #ifdef EECONFIG
 			case 130:
 				//? --- M130: heater P factor ---
-				//? Undocumented.
+				//? Set the PID proportional factor for heater P to S counts/C. 
         #ifdef HEATER_EXTRUDER
           if ( ! next_target.seen_P)
             next_target.P = HEATER_EXTRUDER;
@@ -681,33 +681,36 @@ void process_gcode_command() {
         #endif
 				if (next_target.seen_S)
 					pid_set_p(next_target.P, next_target.S);
+				// Note that gcode_process scales next_target.S by PID_SCALE.
 				break;
 
 			case 131:
 				//? --- M131: heater I factor ---
-				//? Undocumented.
+				//? Set the PID integral factor for heater P to S counts/(C*s)
         #ifdef HEATER_EXTRUDER
           if ( ! next_target.seen_P)
             next_target.P = HEATER_EXTRUDER;
         #endif
 				if (next_target.seen_S)
 					pid_set_i(next_target.P, next_target.S);
+				// Note that gcode_process scales next_target.S by PID_SCALE.
 				break;
 
 			case 132:
 				//? --- M132: heater D factor ---
-				//? Undocumented.
+				//? Set the PID derivative factor for heater P to S counts/(C/s)
         #ifdef HEATER_EXTRUDER
           if ( ! next_target.seen_P)
             next_target.P = HEATER_EXTRUDER;
         #endif
 				if (next_target.seen_S)
 					pid_set_d(next_target.P, next_target.S);
+				// Note that gcode_process scales next_target.S by PID_SCALE,
 				break;
 
 			case 133:
 				//? --- M133: heater I limit ---
-				//? Undocumented.
+				//? Set the PID integral accumulator limit for heater P to +/-S C*s
         #ifdef HEATER_EXTRUDER
           if ( ! next_target.seen_P)
             next_target.P = HEATER_EXTRUDER;
@@ -718,7 +721,7 @@ void process_gcode_command() {
 
 			case 134:
 				//? --- M134: save PID settings to eeprom ---
-				//? Undocumented.
+				//? Copy the current PID parameters into eeprom for use as defaults next boot. 
 				heater_save_settings();
 				break;
       #endif /* EECONFIG */
@@ -738,7 +741,7 @@ void process_gcode_command() {
 
 			case 140:
 				//? --- M140: Set heated bed temperature ---
-				//? Undocumented.
+				//? See M104.
 				#ifdef	HEATER_BED
 					if ( ! next_target.seen_S)
 						break;
