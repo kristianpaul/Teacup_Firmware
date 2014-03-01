@@ -28,8 +28,8 @@ typedef struct {
         int32_t kI;
         int32_t kD;
         int16_t i_limit;
-        int32_t watts;
-        int32_t t_dead;
+  //        int32_t watts;
+  //      int32_t t_dead;
 } heater_definition_t;
 
 #undef DEFINE_HEATER
@@ -39,9 +39,10 @@ typedef struct {
       (int32_t)(kP > 0 ? kP*PID_SCALE_P     : -kP ),			\
       (int32_t)(kI >=0 ? (kI*PID_SCALE_I): kP*PID_SCALE_I/(-kI) ),	\
       (int32_t)(kD >=0 ? ((float)kD*PID_SCALE_D):  kD/kP*PID_SCALE_D ),	\
-      (int16_t)(i_limit),						\
-      (int32_t)(watts *PID_SCALE),					\
-      (int32_t)(t_dead*PID_SCALE)},
+      (int16_t)(i_limit)						\
+    /* ,(int32_t)(watts *PID_SCALE)	*/				\
+    /* ,(int32_t)(t_dead*PID_SCALE)     */                              \
+},
 static const heater_definition_t heaters[NUM_HEATERS] =
 {
 	#include	"config_wrapper.h"
