@@ -103,14 +103,14 @@
 	Define them to your machine's size relative to what your host considers to be the origin.
 */
 
-//#define	X_MIN			0.0
-//#define	X_MAX			200.0
+#define	X_MIN			0.0
+#define	X_MAX			200.0
 
-//#define	Y_MIN			0.0
-//#define	Y_MAX			200.0
+#define	Y_MIN			0.0
+#define	Y_MAX			200.0
 
-//#define	Z_MIN			0.0
-//#define	Z_MAX			140.0
+#define	Z_MIN			0.0
+#define	Z_MAX			140.0
 
 /**	\def E_ABSOLUTE
 	Some G-Code creators produce relative length commands for the extruder, others absolute ones. G-Code using absolute lengths can be recognized when there are G92 E0 commands from time to time. If you have G92 E0 in your G-Code, define this flag.
@@ -177,36 +177,23 @@
 */
 // #define LOOKAHEAD
 
-/** \def MAX_JERK_X
-    \def MAX_JERK_Y
-    \def MAX_JERK_Z
-    \def MAX_JERK_E
-
+/** \def LOOKAHEAD_MAX_JERK_XY
   When performing look-ahead, we need to decide what an acceptable jerk to the
-  mechanics is. Look-ahead attempts to instantly change direction at movement
-  crossings, which means instant changes in the speed of the axes participating
-  in the movement. Define here how big the speed bumps on each of the axes is
-  allowed to be.
+  mechanics is when we (instantly) change direction.
 
-  If you want a full stop before and after moving a specific axis, define
-  MAX_JERK of this axis to 0. This is often wanted for the Z axis. If you want
-  to ignore jerk on an axis, define it to twice the maximum feedrate of this
-  axis.
-
-  Having these values too low results in more than neccessary slowdown at
-  movement crossings, but is otherwise harmless. Too high values can result
-  in stepper motors suddenly stalling. If angles between movements in your
-  G-code are small and your printer runs through entire curves full speed,
-  there's no point in raising the values.
-
-  Units: mm/min
-  Sane values: 0 to 400
-  Valid range: 0 to 65535
+  Units: micrometers
+  Sane values: 5 to 200
 */
-#define MAX_JERK_X 20
-#define MAX_JERK_Y 20
-#define MAX_JERK_Z 0
-#define MAX_JERK_E 20
+#define LOOKAHEAD_MAX_JERK_XY 10
+
+/** \def LOOKAHEAD_MAX_JERK_E
+  When joining moves with different extrusion rates, define the maximum jerk
+  for the extruder.
+
+  Units: micrometers
+  Sane values: 5 to 200
+*/
+#define LOOKAHEAD_MAX_JERK_E 10
 
 
 
