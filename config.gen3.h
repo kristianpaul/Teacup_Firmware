@@ -64,7 +64,7 @@
 */
 #define	STEPS_PER_M_X					10047
 #define	STEPS_PER_M_Y					10047
-#define	STEPS_PER_M_Z					320000
+#define	STEPS_PER_M_Z					1600000
 
 /// http://blog.arcol.hu/?p=157 may help with this one
 #define	STEPS_PER_M_E					35200
@@ -215,7 +215,7 @@
 	internal pullup resistors
 		the ATmega has internal pullup resistors on it's input pins which are counterproductive with the commonly used eletronic endstops, so they should be switched off. For other endstops, like mechanical ones, you may want to uncomment this.
 */
-//#define USE_INTERNAL_PULLUPS
+#define USE_INTERNAL_PULLUPS
 
 /**
 	this is the official gen3 reprap motherboard pinout
